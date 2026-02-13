@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "VSkin",
+    "version": "1.0.0",
+    "description": "VSkin - Steam inventory scanner",
+    "background": {
+        "service_worker": "background/index.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://steamcommunity.com/*/inventory*"],
+            "js": ["content/inventory.js"],
+            "run_at": "document_idle"
+        },
+        {
+            "matches": ["*://steamcommunity.com/*/tradehistory*"],
+            "js": ["content/tradeHistory.js"],
+            "run_at": "document_idle"
+        }
+    ],
+    "host_permissions": [
+        "https://vskin-back-production.up.railway.app/*"
+    ]
+}

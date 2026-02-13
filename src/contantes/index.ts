@@ -1,0 +1,4 @@
+export const STEAM_CONTEXT_ID = {
+    INVENTORY_UNPROTECTED: "2",
+    INVENTORY_PROTECTED: "16"
+}
