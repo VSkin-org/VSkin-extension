@@ -47,6 +47,8 @@ const STYLES = `
     }
     #vskin-scan-btn svg {
         flex-shrink: 0;
+        width: 16px;
+        height: 16px;
     }
     #vskin-message {
         color: #8f98a0;

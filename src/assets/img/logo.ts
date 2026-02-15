@@ -1,1 +1,13 @@
-export const VSKIN_LOGO_SVG = `<svg width="16" height="16" viewBox="0 0 484 490" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M154.25 166.45L0 166.686L217.213 476.899C229.158 493.957 254.422 493.955 266.365 476.895L318.982 401.729L154.25 166.45Z" fill="url(#vskin_grad0)"/><path d="M483.588 166.686L329.3 166.55L164.61 401.722L217.224 476.892C229.166 493.953 254.432 493.956 266.376 476.897L483.588 166.686Z" fill="url(#vskin_grad1)"/><path d="M483.38 111.009L405.393 0H77.9872L0 111.009H483.38Z" fill="url(#vskin_grad2)"/><defs><linearGradient id="vskin_grad0" x1="1.37617e-05" y1="474.144" x2="462.232" y2="-5.05289" gradientUnits="userSpaceOnUse"><stop stop-color="#1D4ED8"/><stop offset="0.5" stop-color="#2563EB"/><stop offset="1" stop-color="#38BDF8"/></linearGradient><linearGradient id="vskin_grad1" x1="1.37617e-05" y1="474.144" x2="462.232" y2="-5.05289" gradientUnits="userSpaceOnUse"><stop stop-color="#1D4ED8"/><stop offset="0.5" stop-color="#2563EB"/><stop offset="1" stop-color="#38BDF8"/></linearGradient><linearGradient id="vskin_grad2" x1="1.37617e-05" y1="474.144" x2="462.232" y2="-5.05289" gradientUnits="userSpaceOnUse"><stop stop-color="#1D4ED8"/><stop offset="0.5" stop-color="#2563EB"/><stop offset="1" stop-color="#38BDF8"/></linearGradient></defs></svg>`;
+export const VSKIN_LOGO_SVG = `<svg width="512" height="512" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_554_99)">
+<path d="M168.25 177.45L14 177.686L231.213 487.899C243.158 504.957 268.422 504.955 280.365 487.895L332.982 412.729L168.25 177.45Z"/>
+<path d="M497.588 177.686L343.3 177.55L178.61 412.722L231.224 487.892C243.166 504.953 268.432 504.956 280.376 487.897L497.588 177.686Z"/>
+<path d="M497.38 122.009L419.393 11H91.9872L14 122.009H497.38Z"/>
+</g>
+<defs>
+<clipPath id="clip0_554_99">
+<rect width="512" height="512" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+`;
