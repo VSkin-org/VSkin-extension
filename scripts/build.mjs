@@ -1,5 +1,5 @@
 import {context, build} from 'esbuild';
-import {copyFileSync, mkdirSync} from 'fs';
+import {copyFileSync, mkdirSync, readdirSync} from 'fs';
 
 const isWatch = process.argv.includes('--watch');
 
@@ -28,7 +28,11 @@ const configs = [
 ];
 
 mkdirSync('dist', {recursive: true});
+mkdirSync('dist/assets/img', {recursive: true});
 copyFileSync('manifest.json', 'dist/manifest.json');
+readdirSync('src/assets/img').filter((f) => f.endsWith('.png')).forEach((f) => {
+    copyFileSync(`src/assets/img/${f}`, `dist/assets/img/${f}`);
+});
 
 if (isWatch) {
     const contexts = await Promise.all(configs.map((c) => context(c)));

@@ -1,5 +1,8 @@
 import {VSKIN_LOGO_SVG} from "../../assets/img/logo";
+import {resumeButtonCooldown} from "../../helpers/resumeButtonCooldown";
+import {startButtonCooldown} from "../../helpers/startButtonCooldown";
 import {scanInventory} from "../../helpers/steam/scanInventory";
+import {SCAN_COOLDOWN_SECONDS} from "../../contantes";
 
 const STYLES = `
     #inventory_logos {
@@ -17,24 +20,30 @@ const STYLES = `
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
-        background: linear-gradient(135deg, #1D4ED8, #2563EB);
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        border-radius: 3px;
-        color: #ffffff;
-        font-size: 13px;
-        font-weight: 500;
-        font-family: "Motiva Sans", Arial, sans-serif;
+        padding: 0px 15px;
+        background: linear-gradient( to bottom, rgba(47,137,188,1) 5%, rgba(23,67,92,1) 95%);
+        border: none;
+        border-radius: 2px;
+        color: #A4D7F5;
+        font-size: 15px;
+        font-weight: 400;
+        font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
         cursor: pointer;
-        transition: all 0.2s ease;
-        line-height: 1;
+        line-height: 30px;
+    }
+    #vskin-scan-btn span {
+        width: 125px;
+        text-align: left;
     }
     #vskin-scan-btn:hover {
-        background: linear-gradient(135deg, #2563EB, #38BDF8);
-        border-color: rgba(56, 189, 248, 0.6);
+        background: #54a5d4;
+        color: #fff;
     }
-    #vskin-scan-btn:active {
-        opacity: 0.8;
+    #vskin-scan-btn:disabled {
+        background: linear-gradient(135deg, #374151, #4B5563);
+        border-color: rgba(107, 114, 128, 0.3);
+        cursor: not-allowed;
+        opacity: 0.7;
     }
     #vskin-scan-btn svg {
         flex-shrink: 0;
@@ -42,7 +51,7 @@ const STYLES = `
     #vskin-message {
         color: #8f98a0;
         font-size: 13px;
-        font-family: "Motiva Sans", Arial, sans-serif;
+        font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
         min-height: 1.2em;
         line-height: 1.2;
     }
@@ -58,7 +67,9 @@ export const createVskinButton = (): HTMLDivElement => {
     const button = document.createElement("button");
     button.id = "vskin-scan-btn";
     button.innerHTML = `${VSKIN_LOGO_SVG}<span>Scan With VSkin</span>`;
+    resumeButtonCooldown({button});
     button.addEventListener("click", async () => {
+        startButtonCooldown({button, seconds: SCAN_COOLDOWN_SECONDS});
         const response = await scanInventory();
         message.textContent = response?.message ?? "";
     });
