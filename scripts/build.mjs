@@ -12,13 +12,6 @@ const configs = [
         format: 'iife',
     },
     {
-        entryPoints: ['src/content/tradeHistory/index.ts'],
-        bundle: true,
-        outfile: 'dist/content/tradeHistory.js',
-        target: 'chrome110',
-        format: 'iife',
-    },
-    {
         entryPoints: ['src/background/index.ts'],
         bundle: true,
         outfile: 'dist/background/index.js',

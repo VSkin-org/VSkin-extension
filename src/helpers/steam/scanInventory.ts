@@ -28,9 +28,8 @@ export const scanInventory = async () => {
         currentHashes: [itemsHash, protectedItemsHash],
         cachedHashes: [cachedItemsHash, cachedProtectedItemsHash],
     })) {
-        console.log("Inventory is up to date");
-        return;
-    };
+        return {message: "Inventory already synced"};
+    }
 
     await Promise.all([
         setStorageItem({key: STORAGE_KEYS.ITEMS_HASH, value: itemsHash}),

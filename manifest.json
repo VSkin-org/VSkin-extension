@@ -11,23 +11,21 @@
             "matches": ["*://steamcommunity.com/*/inventory*"],
             "js": ["content/inventory.js"],
             "run_at": "document_idle"
-        },
-        {
-            "matches": ["*://steamcommunity.com/*/tradehistory*"],
-            "js": ["content/tradeHistory.js"],
-            "run_at": "document_idle"
         }
     ],
     "permissions": [
         "storage"
     ],
     "icons": {
-        "16": "assets/img/logo_16x16.png",
-        "32": "assets/img/logo_32x32.png",
-        "64": "assets/img/logo_64x64.png",
         "128": "assets/img/logo_128x128.png"
     },
     "host_permissions": [
-        "https://vskin-back-production.up.railway.app/*"
+        "https://api.vskin.gg/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["assets/img/logo_128x128.png"],
+            "matches": ["http://localhost/*", "https://*.vskin.gg/*"]
+        }
     ]
 }
