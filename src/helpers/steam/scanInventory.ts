@@ -18,8 +18,8 @@ export const scanInventory = async () => {
     ]);
 
     const [itemsHash, protectedItemsHash, cachedItemsHash, cachedProtectedItemsHash] = await Promise.all([
-        computeHash({data: items}),
-        computeHash({data: protectedItems}),
+        computeHash({data: items?.assets}),
+        computeHash({data: protectedItems?.assets}),
         getStorageItem<string>({key: STORAGE_KEYS.ITEMS_HASH}),
         getStorageItem<string>({key: STORAGE_KEYS.PROTECTED_ITEMS_HASH}),
     ]);
