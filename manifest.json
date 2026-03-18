@@ -21,6 +21,12 @@
     },
     "host_permissions": [
         "https://api.vskin.gg/*",
-        "*://steamcommunity.com/*"
+        "https://steamcommunity.com/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["assets/img/logo_128x128.png"],
+            "matches": ["https://vskin.gg/*"]
+        }
     ]
 }
