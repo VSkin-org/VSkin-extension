@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "VSkin",
-    "version": "1.0.4",
+    "version": "1.1.0",
     "description": "VSkin - Steam inventory scanner",
     "action": {
         "default_popup": "popup/popup.html",
@@ -12,19 +12,6 @@
     "background": {
         "service_worker": "background/index.js"
     },
-    "content_scripts": [
-        {
-            "matches": ["*://steamcommunity.com/*/inventory*"],
-            "js": ["content/interceptor.js"],
-            "run_at": "document_start",
-            "world": "MAIN"
-        },
-        {
-            "matches": ["*://steamcommunity.com/*/inventory*"],
-            "js": ["content/inventory.js"],
-            "run_at": "document_idle"
-        }
-    ],
     "permissions": [
         "storage",
         "cookies"
@@ -35,11 +22,5 @@
     "host_permissions": [
         "https://api.vskin.gg/*",
         "*://steamcommunity.com/*"
-    ],
-    "web_accessible_resources": [
-        {
-            "resources": ["assets/img/logo_128x128.png"],
-            "matches": ["http://localhost/*", "https://vskin.gg/*", "https://*.vskin.gg/*"]
-        }
     ]
 }

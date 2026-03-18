@@ -3,7 +3,9 @@ import {getSteamLoginCookie} from "../helpers/steam/inventory/getSteamLoginCooki
 import {extractSteamIdFromCookie} from "../helpers/steam/inventory/extractSteamIdFromCookie";
 import {getSteamInventory} from "../services/Steam/getSteamInventory";
 import {getInventorySync} from "../services/VSkinBackend/inventorySync/getInventorySync";
-import {STEAM_CONTEXT_ID} from "../contantes";
+import {startButtonCooldown} from "../helpers/startButtonCooldown";
+import {resumeButtonCooldown} from "../helpers/resumeButtonCooldown";
+import {STEAM_CONTEXT_ID, SCAN_COOLDOWN_SECONDS} from "../contantes";
 import {SteamInventoryResponseInterface} from "../services/Steam/types";
 
 const EMPTY_INVENTORY: SteamInventoryResponseInterface = {
@@ -45,6 +47,10 @@ const messageEl = document.createElement("div");
 messageEl.className = "popup-message";
 messageBox.appendChild(messageEl);
 
+const syncBtn = document.createElement("button");
+syncBtn.className = "popup-btn popup-btn-primary";
+syncBtn.textContent = "Sync Inventory";
+
 container.appendChild(logoWrapper);
 container.appendChild(statusEl);
 card.appendChild(container);
@@ -53,10 +59,6 @@ root.appendChild(card);
 const renderConnected = ({steamId}: {steamId: string}) => {
     statusEl.innerHTML = `<span class="popup-dot"></span> Connected to Steam`;
     statusEl.className = "popup-status connected";
-
-    const syncBtn = document.createElement("button");
-    syncBtn.className = "popup-btn popup-btn-primary";
-    syncBtn.textContent = "Sync Inventory";
 
     syncBtn.addEventListener("click", async () => {
         syncBtn.disabled = true;
@@ -75,10 +77,11 @@ const renderConnected = ({steamId}: {steamId: string}) => {
             const response = await getInventorySync({body: {steamId, items, protectedItems}});
             messageEl.textContent = response.message || "Sync complete";
             messageEl.className = "popup-message success";
+            messageBox.style.display = "";
+            startButtonCooldown({button: syncBtn, seconds: SCAN_COOLDOWN_SECONDS});
         } catch (error) {
             messageEl.textContent = error instanceof Error ? error.message : "Sync failed";
             messageEl.className = "popup-message error";
-        } finally {
             messageBox.style.display = "";
             syncBtn.disabled = false;
             syncBtn.textContent = "Sync Inventory";
@@ -88,6 +91,8 @@ const renderConnected = ({steamId}: {steamId: string}) => {
     container.appendChild(divider);
     container.appendChild(syncBtn);
     container.appendChild(messageBox);
+
+    resumeButtonCooldown({button: syncBtn});
 };
 
 const renderDisconnected = () => {

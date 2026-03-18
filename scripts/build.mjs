@@ -5,20 +5,6 @@ const isWatch = process.argv.includes('--watch');
 
 const configs = [
     {
-        entryPoints: ['src/content/inventory/interceptor.ts'],
-        bundle: true,
-        outfile: 'dist/content/interceptor.js',
-        target: 'chrome111',
-        format: 'iife',
-    },
-    {
-        entryPoints: ['src/content/inventory/index.ts'],
-        bundle: true,
-        outfile: 'dist/content/inventory.js',
-        target: 'chrome110',
-        format: 'iife',
-    },
-    {
         entryPoints: ['src/background/index.ts'],
         bundle: true,
         outfile: 'dist/background/index.js',
