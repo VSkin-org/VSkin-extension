@@ -3,6 +3,12 @@
     "name": "VSkin",
     "version": "1.0.4",
     "description": "VSkin - Steam inventory scanner",
+    "action": {
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+            "128": "assets/img/logo_128x128.png"
+        }
+    },
     "background": {
         "service_worker": "background/index.js"
     },
@@ -20,13 +26,15 @@
         }
     ],
     "permissions": [
-        "storage"
+        "storage",
+        "cookies"
     ],
     "icons": {
         "128": "assets/img/logo_128x128.png"
     },
     "host_permissions": [
-        "https://api.vskin.gg/*"
+        "https://api.vskin.gg/*",
+        "*://steamcommunity.com/*"
     ],
     "web_accessible_resources": [
         {

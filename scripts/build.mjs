@@ -25,14 +25,24 @@ const configs = [
         target: 'chrome110',
         format: 'iife',
     },
+    {
+        entryPoints: ['src/popup/popup.ts'],
+        bundle: true,
+        outfile: 'dist/popup/popup.js',
+        target: 'chrome110',
+        format: 'iife',
+    },
 ];
 
 mkdirSync('dist', {recursive: true});
 mkdirSync('dist/assets/img', {recursive: true});
+mkdirSync('dist/popup', {recursive: true});
 copyFileSync('manifest.json', 'dist/manifest.json');
 readdirSync('src/assets/img').filter((f) => f.endsWith('.png')).forEach((f) => {
     copyFileSync(`src/assets/img/${f}`, `dist/assets/img/${f}`);
 });
+copyFileSync('src/popup/popup.html', 'dist/popup/popup.html');
+copyFileSync('src/popup/popup.css', 'dist/popup/popup.css');
 
 if (isWatch) {
     const contexts = await Promise.all(configs.map((c) => context(c)));
