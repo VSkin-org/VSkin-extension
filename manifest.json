@@ -1,12 +1,18 @@
 {
     "manifest_version": 3,
     "name": "VSkin",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "VSkin - Steam inventory scanner",
     "background": {
         "service_worker": "background/index.js"
     },
     "content_scripts": [
+        {
+            "matches": ["*://steamcommunity.com/*/inventory*"],
+            "js": ["content/interceptor.js"],
+            "run_at": "document_start",
+            "world": "MAIN"
+        },
         {
             "matches": ["*://steamcommunity.com/*/inventory*"],
             "js": ["content/inventory.js"],
