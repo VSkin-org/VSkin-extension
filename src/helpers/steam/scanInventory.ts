@@ -1,11 +1,7 @@
 import {getSteamInventory} from "../../services/Steam/getSteamInventory";
 import {getInventorySync} from "../../services/VSkinBackend/inventorySync/getInventorySync";
-import {computeHash} from "../computeHash";
-import {getStorageItem} from "../getStorageItem";
-import {isInventoryUpToDate} from "../isInventoryUpToDate";
-import {setStorageItem} from "../setStorageItem";
 import {getLoggedInSteamId} from "./inventory/getLoggedInSteamId";
-import {STEAM_CONTEXT_ID, STORAGE_KEYS} from "../../contantes";
+import {STEAM_CONTEXT_ID} from "../../contantes";
 import {isOwnInventory} from "./inventory/isOwnInventory";
 
 export const scanInventory = async () => {
@@ -15,25 +11,6 @@ export const scanInventory = async () => {
     const [items, protectedItems] = await Promise.all([
         getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED}}),
         getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_PROTECTED}}),
-    ]);
-
-    const [itemsHash, protectedItemsHash, cachedItemsHash, cachedProtectedItemsHash] = await Promise.all([
-        computeHash({data: items?.assets}),
-        computeHash({data: protectedItems?.assets}),
-        getStorageItem<string>({key: STORAGE_KEYS.ITEMS_HASH}),
-        getStorageItem<string>({key: STORAGE_KEYS.PROTECTED_ITEMS_HASH}),
-    ]);
-
-    if (isInventoryUpToDate({
-        currentHashes: [itemsHash, protectedItemsHash],
-        cachedHashes: [cachedItemsHash, cachedProtectedItemsHash],
-    })) {
-        return {message: "Inventory already synced"};
-    }
-
-    await Promise.all([
-        setStorageItem({key: STORAGE_KEYS.ITEMS_HASH, value: itemsHash}),
-        setStorageItem({key: STORAGE_KEYS.PROTECTED_ITEMS_HASH, value: protectedItemsHash}),
     ]);
 
     return await getInventorySync({body: {steamId, items, protectedItems}});

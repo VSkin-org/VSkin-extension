@@ -4,8 +4,6 @@ export const STEAM_CONTEXT_ID = {
 }
 
 export const STORAGE_KEYS = {
-    ITEMS_HASH: "inventoryItemsHash",
-    PROTECTED_ITEMS_HASH: "inventoryProtectedItemsHash",
     SCAN_COOLDOWN_END: "scanCooldownEnd",
 }
 
