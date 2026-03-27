@@ -75,8 +75,8 @@ const renderConnected = ({steamId}: {steamId: string}) => {
             ]);
 
             const response = await getInventorySync({body: {steamId, items, protectedItems}});
-            messageEl.textContent = response.message || "Sync complete";
-            messageEl.className = "popup-message success";
+            messageEl.textContent = response.message || "Sync in progress";
+            messageEl.className = "popup-message";
             messageBox.style.display = "";
             startButtonCooldown({button: syncBtn, seconds: SCAN_COOLDOWN_SECONDS});
         } catch (error) {
