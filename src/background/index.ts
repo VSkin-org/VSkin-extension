@@ -1,5 +1,19 @@
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+const ALLOWED_ORIGINS = [
+    "https://api.vskin.gg",
+    "https://staging.api.vskin.gg",
+    "http://localhost:5001",
+];
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (sender.id !== chrome.runtime.id) return;
+
     if (message.type === "POST") {
+        const isAllowed = ALLOWED_ORIGINS.some((origin) => message.url?.startsWith(origin));
+        if (!isAllowed) {
+            sendResponse({success: false, message: "URL not allowed"});
+            return true;
+        }
+
         fetch(message.url, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -7,7 +21,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         })
             .then((response) => response.json())
             .then((data) => sendResponse(data))
-            .catch((error) => sendResponse({success: false, message: error.message}));
+            .catch(() => sendResponse({success: false, message: "Request failed"}));
         return true;
     }
 });
