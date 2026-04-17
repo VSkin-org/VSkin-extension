@@ -4,5 +4,10 @@ export const get = async <T>({url}: {url: string}): Promise<T> => {
 };
 
 export const post = async <T>({url, body}: {url: string; body: unknown}): Promise<T> => {
-    return chrome.runtime.sendMessage({type: "POST", url, body});
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+    });
+    return response.json();
 };

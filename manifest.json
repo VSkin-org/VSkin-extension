@@ -9,10 +9,7 @@
             "128": "assets/img/logo_128x128.png"
         }
     },
-    "background": {
-        "service_worker": "background/index.js"
-    },
-    "permissions": [
+"permissions": [
         "storage",
         "cookies"
     ],

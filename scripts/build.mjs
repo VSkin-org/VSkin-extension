@@ -5,13 +5,6 @@ const isWatch = process.argv.includes('--watch');
 
 const configs = [
     {
-        entryPoints: ['src/background/index.ts'],
-        bundle: true,
-        outfile: 'dist/background/index.js',
-        target: 'chrome110',
-        format: 'iife',
-    },
-    {
         entryPoints: ['src/popup/popup.ts'],
         bundle: true,
         outfile: 'dist/popup/popup.js',
