@@ -69,8 +69,11 @@ const renderConnected = ({steamId}: {steamId: string}) => {
 
         try {
             const [items, protectedItems] = await Promise.all([
-                getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED}}),
+                getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED}})
+                    .then((res) => ({...EMPTY_INVENTORY, ...res}))
+                    .catch(() => EMPTY_INVENTORY),
                 getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_PROTECTED}})
+                    .then((res) => ({...EMPTY_INVENTORY, ...res}))
                     .catch(() => EMPTY_INVENTORY),
             ]);
 
