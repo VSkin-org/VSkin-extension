@@ -1,20 +1,10 @@
 import {VSKIN_LOGO_SVG} from "../assets/img/logo";
 import {getSteamLoginCookie} from "../helpers/steam/inventory/getSteamLoginCookie";
 import {extractSteamIdFromCookie} from "../helpers/steam/inventory/extractSteamIdFromCookie";
-import {getSteamInventory} from "../services/Steam/getSteamInventory";
-import {getInventorySync} from "../services/VSkinBackend/inventorySync/getInventorySync";
+import {runInventorySync, RunInventorySyncResult} from "../helpers/runInventorySync";
 import {startButtonCooldown} from "../helpers/startButtonCooldown";
 import {resumeButtonCooldown} from "../helpers/resumeButtonCooldown";
-import {STEAM_CONTEXT_ID, SCAN_COOLDOWN_SECONDS} from "../contantes";
-import {SteamInventoryResponseInterface} from "../services/Steam/types";
-
-const EMPTY_INVENTORY: SteamInventoryResponseInterface = {
-    assets: [],
-    descriptions: [],
-    total_inventory_count: 0,
-    success: true,
-    rwgrsn: -1,
-};
+import {SCAN_COOLDOWN_SECONDS} from "../contantes";
 
 const root = document.getElementById("popup-root")!;
 
@@ -56,7 +46,18 @@ container.appendChild(statusEl);
 card.appendChild(container);
 root.appendChild(card);
 
-const renderConnected = ({steamId}: {steamId: string}) => {
+const formatErrorMessage = (result: Exclude<RunInventorySyncResult, {status: "OK"}>): string => {
+    switch (result.status) {
+        case "COOLDOWN":
+            return `Please wait ${result.secondsLeft}s before syncing again`;
+        case "NO_SESSION":
+            return "Not connected to Steam";
+        case "BACKEND_ERROR":
+            return result.message;
+    }
+};
+
+const renderConnected = () => {
     statusEl.innerHTML = `<span class="popup-dot"></span> Connected to Steam`;
     statusEl.className = "popup-status connected";
 
@@ -67,23 +68,15 @@ const renderConnected = ({steamId}: {steamId: string}) => {
         messageEl.textContent = "";
         messageEl.className = "popup-message";
 
-        try {
-            const [items, protectedItems] = await Promise.all([
-                getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED}})
-                    .then((res) => ({...EMPTY_INVENTORY, ...res}))
-                    .catch(() => EMPTY_INVENTORY),
-                getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_PROTECTED}})
-                    .then((res) => ({...EMPTY_INVENTORY, ...res}))
-                    .catch(() => EMPTY_INVENTORY),
-            ]);
+        const result = await runInventorySync();
 
-            const response = await getInventorySync({body: {steamId, items, protectedItems}});
-            messageEl.textContent = response.message || "Sync in progress";
+        if (result.status === "OK") {
+            messageEl.textContent = result.message || "Sync in progress";
             messageEl.className = "popup-message";
             messageBox.style.display = "";
             startButtonCooldown({button: syncBtn, seconds: SCAN_COOLDOWN_SECONDS});
-        } catch (error) {
-            messageEl.textContent = error instanceof Error ? error.message : "Sync failed";
+        } else {
+            messageEl.textContent = formatErrorMessage(result);
             messageEl.className = "popup-message error";
             messageBox.style.display = "";
             syncBtn.disabled = false;
@@ -129,7 +122,7 @@ const init = async () => {
         return;
     }
 
-    renderConnected({steamId});
+    renderConnected();
 };
 
 init();

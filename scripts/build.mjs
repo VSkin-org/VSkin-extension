@@ -11,11 +11,19 @@ const configs = [
         target: 'chrome110',
         format: 'iife',
     },
+    {
+        entryPoints: ['src/background/index.ts'],
+        bundle: true,
+        outfile: 'dist/background/index.js',
+        target: 'chrome110',
+        format: 'iife',
+    },
 ];
 
 mkdirSync('dist', {recursive: true});
 mkdirSync('dist/assets/img', {recursive: true});
 mkdirSync('dist/popup', {recursive: true});
+mkdirSync('dist/background', {recursive: true});
 copyFileSync('manifest.json', 'dist/manifest.json');
 readdirSync('src/assets/img').filter((f) => f.endsWith('.png')).forEach((f) => {
     copyFileSync(`src/assets/img/${f}`, `dist/assets/img/${f}`);
