@@ -1,6 +1,8 @@
 export type RequestInterfaceQuery = {
     steamId: string;
     contextId: string;
+    startAssetId?: string;
+    count?: number;
 }
 
 export type AssetResponseInterface = {
@@ -52,7 +54,7 @@ export type DescriptionResponseInterface = {
     type: string;
     market_name: string;
     market_hash_name: string;
-    owner_descriptions: Array<{
+    owner_descriptions?: Array<{
         value: string;
         type: string;
         color?: string;
@@ -71,7 +73,7 @@ export type PropertyResponseInterface = {
     int_value?: string;
     float_value?: string;
     string_value?: string;
-    name: string;
+    name?: string;
 };
 
 export type parentRelationShipPropResponseInterface = {
@@ -98,8 +100,8 @@ export type SteamInventoryResponseInterface = {
     assets: Array<AssetResponseInterface>;
     descriptions: Array<DescriptionResponseInterface>;
     asset_properties?: Array<AssetPropertyResponseInterface>;
-    more_items?: boolean;
-    last_asset_id?: string;
+    more_items?: number;
+    last_assetid?: string;
     total_inventory_count: number;
     success: boolean;
     rwgrsn: number;

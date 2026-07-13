@@ -2,7 +2,7 @@ import {getSteamLoginCookie} from "./steam/inventory/getSteamLoginCookie";
 import {extractSteamIdFromCookie} from "./steam/inventory/extractSteamIdFromCookie";
 import {getStorageItem} from "./getStorageItem";
 import {setStorageItem} from "./setStorageItem";
-import {getSteamInventory} from "../services/Steam/getSteamInventory";
+import {getFullSteamInventory} from "../services/Steam/getFullSteamInventory";
 import {getInventorySync} from "../services/VSkinBackend/inventorySync/getInventorySync";
 import {SteamInventoryResponseInterface} from "../services/Steam/types";
 import {STEAM_CONTEXT_ID, STORAGE_KEYS, SCAN_COOLDOWN_SECONDS} from "../contantes";
@@ -34,16 +34,12 @@ export const runInventorySync = async (): Promise<RunInventorySyncResult> => {
     if (!steamId) return {status: "NO_SESSION"};
 
     try {
-        const [items, protectedItems] = await Promise.all([
-            getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED}})
-                .then((res) => ({...EMPTY_INVENTORY, ...res}))
-                .catch(() => EMPTY_INVENTORY),
-            getSteamInventory({query: {steamId, contextId: STEAM_CONTEXT_ID.INVENTORY_PROTECTED}})
-                .then((res) => ({...EMPTY_INVENTORY, ...res}))
-                .catch(() => EMPTY_INVENTORY),
-        ]);
+        const inventory = await getFullSteamInventory({
+            steamId,
+            contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED,
+        }).catch(() => EMPTY_INVENTORY);
 
-        const response = await getInventorySync({body: {steamId, items, protectedItems}});
+        const response = await getInventorySync({body: {steamId, inventory}});
 
         await setStorageItem({
             key: STORAGE_KEYS.SCAN_COOLDOWN_END,

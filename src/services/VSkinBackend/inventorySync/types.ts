@@ -2,8 +2,7 @@ import {SteamInventoryResponseInterface} from "../../Steam/types";
 
 export type RequestInterfaceBody = {
     steamId: string;
-    items: SteamInventoryResponseInterface;
-    protectedItems: SteamInventoryResponseInterface;
+    inventory: SteamInventoryResponseInterface;
 };
 
 export type ResponseInterface = {
