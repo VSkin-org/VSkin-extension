@@ -10,7 +10,7 @@ Allows users to sync their full CS2 inventory - including trade-locked and prote
 - Reads your Steam login cookie locally to identify your account (Steam ID)
 - Fetches your CS2 inventory directly from Steam's public inventory endpoint
 - Sends the inventory data to VSkin servers so your showcase can be built
-- Syncs are triggered either by you (popup button) or by vskin.gg itself (on page load and after trade confirmations) - never while you browse other sites
+- Syncs are triggered either by you (popup button) or by vskin.gg itself (when you land on the site, and again when one of your VSkin offers is completed) - never while you browse other sites
 
 ---
 
@@ -37,7 +37,7 @@ At no point can VSkin interact with trades or your account actions.
 1. You log into Steam normally via your browser
 2. When you open the extension popup, it reads your `steamLoginSecure` cookie **locally** to extract your 17-digit Steam ID
 3. The cookie value itself is never transmitted - only the Steam ID is used
-4. A sync runs either automatically (while you're on vskin.gg, on page load and after trade confirmations) or manually (when you click "Sync Inventory" in the popup). On each sync, the extension fetches your CS2 inventory from Steam's public endpoint (`steamcommunity.com/inventory/...`)
+4. A sync runs either automatically (while you're on vskin.gg: when you land on the site, and again when one of your VSkin offers is completed) or manually (when you click "Sync Inventory" in the popup). On each sync, the extension fetches your CS2 inventory from Steam's public endpoint (`steamcommunity.com/inventory/...`). It never opens or reads a Steam page: the request goes straight to that endpoint from the service worker
 5. Both standard and protected (trade-locked) items are retrieved
 6. This inventory data is sent to VSkin's API to build your showcase
 7. A 30-second cooldown is enforced between syncs
