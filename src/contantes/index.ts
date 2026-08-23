@@ -1,5 +1,6 @@
 export const STEAM_CONTEXT_ID = {
-    INVENTORY_UNPROTECTED: "2"
+    INVENTORY_UNPROTECTED: "2",
+    INVENTORY_PROTECTED: "16"
 }
 
 export const STORAGE_KEYS = {

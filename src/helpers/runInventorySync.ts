@@ -36,7 +36,10 @@ export const runInventorySync = async (): Promise<RunInventorySyncResult> => {
     try {
         const inventory = await getFullSteamInventory({
             steamId,
-            contextId: STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED,
+            contextIds: [
+                STEAM_CONTEXT_ID.INVENTORY_UNPROTECTED,
+                STEAM_CONTEXT_ID.INVENTORY_PROTECTED,
+            ],
         }).catch(() => EMPTY_INVENTORY);
 
         const response = await getInventorySync({body: {steamId, inventory}});
